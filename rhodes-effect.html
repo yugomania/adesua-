@@ -3,270 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Rhodes Effect — a capital story</title>
+<title>The Ripple Effect — Eight Years | An Aruwa Capital Story</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-  :root{
-    --bg:#14110F;
-    --panel:#1C1815;
-    --rust:#B5502E;
-    --rust-bright:#D45F37;
-    --rust-soft:#8C4026;
-    --gold:#C9A227;
-    --gold-bright:#E0B738;
-    --text:#EDE6DC;
-    --muted:#93897C;
-    --line:#3A322C;
+  .chain-wrap {
+    max-width: 580px;
+    width: 100%;
+    margin: 1.5rem auto;
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    overflow-x:hidden;
+  .links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
   }
-  @media (prefers-reduced-motion: no-preference){
-    html{scroll-behavior:smooth;}
-    .scroller{scroll-behavior:smooth;}
+  .link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    width: 100%;
+    max-width: 480px;
+    background: var(--panel-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
-  .serif{font-family:'Fraunces', serif;}
-
-  .scroller{
-    height:100vh;
-    overflow-y:scroll;
-    scroll-snap-type:y proximity;
-    -webkit-overflow-scrolling:touch;
+  .link.shown {
+    opacity: 1;
+    transform: translateY(0);
+    margin-bottom: 1rem;
   }
-
-  section{
-    min-height:100vh; width:100%;
-    display:flex; align-items:center; justify-content:center;
-    padding:8vh 6vw; text-align:center; position:relative;
-    scroll-snap-align:start;
+  .link .tag {
+    font-size: 0.8rem;
+    color: var(--rust-bright);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
   }
-
-  .fade-up{opacity:0; transform:translateY(18px); transition:opacity .9s ease, transform .9s ease;}
-  .in-view .fade-up{opacity:1; transform:translateY(0);}
-  .fade-up.d1{transition-delay:.12s;}
-  .fade-up.d2{transition-delay:.28s;}
-
-  /* hero */
-  #hero{background:radial-gradient(120% 90% at 50% 15%, #1F1A16 0%, var(--bg) 60%);}
-  .hero-eyebrow{color:var(--muted); font-size:.85rem; margin-bottom:1.4rem;}
-  .hero-title{font-family:'Fraunces', serif; font-weight:500; font-size:clamp(2.1rem,6vw,3.4rem); line-height:1.15; margin:0 0 1.4rem; max-width:680px;}
-  .hero-sub{color:var(--muted); font-size:1.05rem; max-width:460px; margin:0 auto 3rem; line-height:1.6;}
-  .begin{
-    display:inline-block;
-    border:1.5px solid var(--rust);
-    background:rgba(181,80,46,0.18);
-    color:#FFFFFF;
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:1rem;
-    font-weight:600;
-    letter-spacing:.02em;
-    padding:.95rem 2.2rem;
-    border-radius:999px;
-    cursor:pointer;
-    box-shadow:0 4px 18px rgba(181,80,46,0.3);
-    transition:all .25s ease;
+  .link .stat {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    font-weight: 500;
   }
-  .begin:hover{
-    border-color:var(--rust-bright);
-    background:var(--rust);
-    color:#FFFFFF;
-    transform:translateY(-2px);
-    box-shadow:0 8px 24px rgba(181,80,46,0.5);
+  .link .desc {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.5;
   }
-  .begin:active{
-    transform:translateY(0);
-    box-shadow:0 3px 10px rgba(181,80,46,0.3);
+  .connector {
+    width: 2px;
+    height: 1.6rem;
+    background: var(--rust);
+    margin-bottom: 1rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
-  .begin:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
-
-  /* chain */
-  #chain{flex-direction:column; gap:2.4rem; min-height:100vh;}
-  .chain-head{max-width:480px;}
-  .chain-head p{color:var(--muted); line-height:1.6;}
-  .chain-wrap{max-width:560px; width:100%;}
-  .links{display:flex; flex-direction:column; align-items:center; gap:0;}
-  .link{
-    display:flex; flex-direction:column; align-items:center; gap:.4rem;
-    width:100%; max-width:440px;
-    opacity:0; max-height:0; overflow:hidden;
-    transition:opacity .6s ease, max-height .6s ease;
+  .connector.shown {
+    opacity: 1;
   }
-  .link.shown{opacity:1; max-height:220px; margin-bottom:1.6rem;}
-  .link .tag{font-size:.78rem; color:var(--rust); text-transform:lowercase; font-weight:600;}
-  .link .stat{font-family:'Fraunces', serif; font-size:1.9rem; color:var(--gold);}
-  .link .desc{font-size:.95rem; color:var(--text); max-width:400px; line-height:1.5;}
-  .connector{
-    width:2px; height:1.6rem; background:var(--line);
-    margin-bottom:1.6rem;
+  .pull-btn {
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--rust);
+    border: 1.5px solid var(--rust);
+    color: #FFFFFF;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.8rem 1.8rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 16px rgba(181, 80, 46, 0.4);
+    transition: all 0.25s ease;
   }
-  .connector.shown{background:var(--rust);}
-  .pull-btn{
-    margin-top:.8rem;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    background:rgba(181,80,46,0.15);
-    border:1.5px solid var(--rust);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:.95rem;
-    font-weight:600;
-    cursor:pointer;
-    padding:.55rem 1.3rem;
-    border-radius:999px;
-    box-shadow:0 3px 12px rgba(181,80,46,0.2);
-    transition:all .25s ease;
+  .pull-btn:hover {
+    background: var(--rust-bright);
+    border-color: var(--rust-bright);
+    box-shadow: 0 6px 20px rgba(181, 80, 46, 0.55);
+    transform: translateY(-2px);
   }
-  .pull-btn:hover{
-    background:var(--rust);
-    color:#FFFFFF;
-    border-color:var(--rust-bright);
-    box-shadow:0 6px 18px rgba(181,80,46,0.45);
-    transform:translateY(-1px);
+  .pull-btn:active {
+    transform: translateY(0);
   }
-  .pull-btn:active{transform:translateY(0);}
-  .pull-btn:disabled{opacity:0; pointer-events:none;}
-
-  /* closing */
-  #closing{background:linear-gradient(180deg, var(--bg) 0%, var(--panel) 100%);}
-  .closing-inner{max-width:540px;}
-  .closing-line{font-family:'Fraunces', serif; font-size:clamp(1.5rem,4.5vw,2.1rem); line-height:1.4; margin:0 0 2rem;}
-  .closing-line em{color:var(--gold); font-style:italic;}
-  .aruwa-body{max-width:480px; margin:0 auto; line-height:1.75; font-size:1rem; color:var(--muted);}
-  .aruwa-body strong{color:var(--gold); font-weight:500;}
-  .signature{margin-top:3rem; padding-top:2rem; border-top:1px solid var(--line);}
-  .signature .n{font-family:'Fraunces', serif; font-size:1.3rem;}
-  .signature .r{color:var(--muted); font-size:.9rem; margin-top:.3rem;}
-  .source-note{margin-top:2.4rem; font-size:.78rem; color:var(--muted); max-width:420px; line-height:1.5;}
-  .next-piece{margin-top:2rem;}
-  .next-piece a{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    color:var(--gold);
-    background:rgba(201,162,39,0.1);
-    border:1.5px solid var(--gold);
-    padding:.75rem 1.6rem;
-    border-radius:999px;
-    text-decoration:none;
-    font-size:.95rem;
-    font-weight:600;
-    box-shadow:0 4px 16px rgba(201,162,39,0.2);
-    transition:all .25s ease;
+  .pull-btn:disabled {
+    opacity: 0.4;
+    pointer-events: none;
   }
-  .next-piece a:hover{
-    background:var(--gold);
-    color:#14110F;
-    border-color:var(--gold-bright);
-    box-shadow:0 6px 22px rgba(201,162,39,0.45);
-    transform:translateY(-2px);
+  .source-note {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .next-piece a:active{transform:translateY(0);}
 </style>
 </head>
 <body>
 
-<div class="scroller">
+<header class="site-header">
+  <div class="nav-container">
+    <a href="index.html" class="brand">
+      <span>Eight Years</span>
+      <span class="brand-tag">Adesuwa Rhodes</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">01. The Leap</a>
+      <a href="eight-years.html" class="nav-link">02. The 8 Years</a>
+      <a href="impact.html" class="nav-link">03. Impact</a>
+      <a href="rhodes-effect.html" class="nav-link active">04. Ripple Effect</a>
+      <a href="reflection.html" class="nav-link">05. Reflection</a>
+    </nav>
+  </div>
+</header>
 
-  <section id="hero" class="in-view">
-    <div>
-      <div class="hero-eyebrow fade-up">an interactive story</div>
-      <h1 class="hero-title fade-up d1">A check is a small thing.<br>Watch where it goes.</h1>
-      <p class="hero-sub fade-up d2">What actually happens after Aruwa Capital writes an investment into an overlooked business — traced link by link.</p>
-      <button class="begin fade-up d2" id="beginBtn">Pull the thread</button>
-    </div>
-  </section>
-
-  <section id="chain">
-    <div class="chain-head fade-up">
-      <p>Each figure below is a real, reported outcome of Aruwa Capital's portfolio — not a projection.</p>
-    </div>
-    <div class="chain-wrap fade-up d1">
-      <div class="links" id="links"></div>
-      <button class="pull-btn" id="pullBtn">pull →</button>
-    </div>
-  </section>
-
-  <section id="closing">
-    <div class="closing-inner">
-      <p class="closing-line fade-up">Capital didn't stop at the check.<br>It kept <em>moving</em>.</p>
-      <p class="aruwa-body fade-up d1">Aruwa Capital invests through a gender lens — backing businesses that are founded or led by women, or that serve women as customers — on the belief that closing that gap doesn't just help women. It compounds through <strong>families</strong>, <strong>supply chains</strong>, and <strong>local economies</strong> at once.</p>
-      <div class="signature fade-up d2">
-        <div class="n">Adesuwa Rhodes</div>
-        <div class="r">Founder &amp; Managing Partner, Aruwa Capital Management</div>
-      </div>
-      <p class="source-note fade-up d2">Figures reported by Aruwa Capital Management and Alliance Magazine, ImpactAssets, and thebenchmark.com.ng, as publicly disclosed through 2025.</p>
-      <p class="next-piece fade-up d2">
-        <a href="eight-years.html">← Back to where it started: eight years of no</a>
-      </p>
-    </div>
-  </section>
-
+<div class="mobile-nav">
+  <span>Chapter 04 of 05</span>
+  <span style="color:var(--text);font-weight:600;">The Ripple Effect</span>
 </div>
 
+<main class="main-content fade-in">
+  <div class="chapter-badge">Chapter 04 · The Multiplier</div>
+  <h1 class="page-title">A check is a small thing.<br>Watch where it goes.</h1>
+  <p class="page-sub">What actually happens after Aruwa Capital writes an investment into an overlooked business — traced link by link.</p>
+
+  <div class="card">
+    <div style="color:var(--muted);font-size:0.9rem;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:1.2rem;">
+      Real Reported Outcomes · Click to Reveal
+    </div>
+
+    <div class="chain-wrap">
+      <div class="links" id="links"></div>
+      <button class="pull-btn" id="pullBtn">
+        <span>Pull The Thread (Reveal Step 1)</span>
+        <span>→</span>
+      </button>
+    </div>
+
+    <div id="chainCompleteAction" style="display:none;margin-top:1.5rem;" class="fade-in">
+      <a href="reflection.html" class="btn btn-primary" style="font-size:1.05rem;padding:0.95rem 2.2rem;">
+        <span>Write Your Reflection in Chapter 5</span>
+        <span>→</span>
+      </a>
+    </div>
+
+    <p class="source-note">
+      *Figures reported by Aruwa Capital Management, Alliance Magazine, ImpactAssets, and publicly disclosed data through 2025.
+    </p>
+  </div>
+
+  <div class="page-nav">
+    <div class="page-nav-left">
+      <a href="impact.html" class="btn btn-outline" style="padding:0.6rem 1.4rem;font-size:0.9rem;">
+        ← Prev: Impact &amp; Numbers
+      </a>
+    </div>
+    <div class="page-nav-right">
+      <a href="reflection.html" class="btn btn-secondary" style="padding:0.6rem 1.4rem;font-size:0.9rem;">
+        Next: Reflection →
+      </a>
+    </div>
+  </div>
+</main>
+
 <script>
-  const beginBtn = document.getElementById('beginBtn');
-  if (beginBtn) {
-    beginBtn.addEventListener('click', () => {
-      document.getElementById('chain').scrollIntoView({behavior:'smooth'});
-    });
-  }
-
-  const sections = document.querySelectorAll('section');
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in-view'); });
-    }, {threshold: 0.2});
-    sections.forEach(s => io.observe(s));
-  } else {
-    sections.forEach(s => s.classList.add('in-view'));
-  }
-
   const chainData = [
-    { tag:'the check', stat:'$500K – $2.5M', desc:'Aruwa\'s typical investment into one growing, overlooked business in Nigeria or Ghana.' },
-    { tag:'the businesses', stat:'10 investments', desc:'Companies backed so far — about half founded or led by women.' },
-    { tag:'the jobs', stat:'~97,000 jobs', desc:'Created directly and indirectly across the portfolio, roughly 700 of them direct hires.' },
-    { tag:'the supply chain', stat:'$18.6M', desc:'Generated for the agents, distributors, smallholder farmers and retailers around those businesses.' },
-    { tag:'the economy', stat:'18 countries', desc:'Where portfolio companies now generate revenue, radiating out from two home markets.' },
-    { tag:'the state', stat:'$2.9M in taxes', desc:'Paid into Nigeria\'s economy by the businesses Aruwa backed.' },
+    { tag: 'Step 1 · The Check', stat: '$500K – $2.5M', desc: 'Aruwa\'s typical direct investment into one high-potential, overlooked business in Nigeria or Ghana.' },
+    { tag: 'Step 2 · The Businesses', stat: '10 Investments', desc: 'Companies scaled across core sectors — about half founded or led by women leaders.' },
+    { tag: 'Step 3 · The Jobs', stat: '~97,000 Jobs', desc: 'Created directly and indirectly across the portfolio ecosystem, including 700+ direct hires.' },
+    { tag: 'Step 4 · Supply Chain Impact', stat: '$18.6M', desc: 'Generated for distributors, local agents, smallholder farmers, and retailers surrounding those businesses.' },
+    { tag: 'Step 5 · Regional Expansion', stat: '18 Countries', desc: 'Where portfolio companies now generate active revenue, radiating out from home markets.' },
+    { tag: 'Step 6 · Macro Contribution', stat: '$2.9M in Taxes', desc: 'Paid into the local economy by the businesses Aruwa backed from that first fund.' }
   ];
 
   const linksEl = document.getElementById('links');
   const pullBtn = document.getElementById('pullBtn');
+  const completeAction = document.getElementById('chainCompleteAction');
   let idx = 0;
 
-  function renderNext(){
-    if(idx >= chainData.length){
-      pullBtn.disabled = true;
-      setTimeout(() => document.getElementById('closing').scrollIntoView({behavior:'smooth'}), 900);
+  function renderNext() {
+    if (idx >= chainData.length) {
       return;
     }
-    if(idx > 0){
+
+    if (idx > 0) {
       const c = document.createElement('div');
       c.className = 'connector';
       linksEl.appendChild(c);
       requestAnimationFrame(() => c.classList.add('shown'));
     }
+
     const d = chainData[idx];
     const el = document.createElement('div');
     el.className = 'link';
-    el.innerHTML = `<div class="tag">${d.tag}</div><div class="stat">${d.stat}</div><div class="desc">${d.desc}</div>`;
+    el.innerHTML = `
+      <div class="tag">${d.tag}</div>
+      <div class="stat">${d.stat}</div>
+      <div class="desc">${d.desc}</div>
+    `;
     linksEl.appendChild(el);
     requestAnimationFrame(() => el.classList.add('shown'));
+
     idx++;
-    if(idx === chainData.length){ pullBtn.textContent = 'see what it adds up to →'; }
+
+    if (idx < chainData.length) {
+      pullBtn.innerHTML = `<span>Pull Next Link (Step ${idx + 1} of 6)</span> <span>→</span>`;
+    } else {
+      pullBtn.style.display = 'none';
+      completeAction.style.display = 'block';
+    }
   }
 
-  if (pullBtn) {
-    pullBtn.addEventListener('click', renderNext);
-  }
+  pullBtn.addEventListener('click', renderNext);
 </script>
 
 </body>

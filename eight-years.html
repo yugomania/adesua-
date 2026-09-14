@@ -3,524 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eight Years — an Aruwa Capital story</title>
+<title>The 8 Years — Eight Years | An Aruwa Capital Story</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-  :root{
-    --bg:#14110F;
-    --panel:#1C1815;
-    --rust:#B5502E;
-    --rust-bright:#D45F37;
-    --rust-soft:#8C4026;
-    --gold:#C9A227;
-    --gold-bright:#E0B738;
-    --text:#EDE6DC;
-    --muted:#93897C;
-    --line:#3A322C;
+  .track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    margin: 2rem auto;
+    max-width: 500px;
+    width: 100%;
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    overflow-x:hidden;
+  .yr-num {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(4rem, 12vw, 6rem);
+    color: var(--rust);
+    width: 2.4ch;
+    text-align: right;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
   }
-  @media (prefers-reduced-motion: no-preference){
-    html{scroll-behavior:smooth;}
-    .scroller{scroll-behavior:smooth;}
+  .yr-content {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
   }
-
-  .serif{font-family:'Fraunces', serif;}
-
-  .scroller{
-    height:100vh;
-    overflow-y:scroll;
-    scroll-snap-type:y proximity;
-    -webkit-overflow-scrolling:touch;
+  .yr-status {
+    font-size: 1.3rem;
+    color: var(--text);
+    min-height: 1.6em;
   }
-  section{
-    min-height:100vh;
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    scroll-snap-align:start;
-    position:relative;
-    padding:8vh 6vw;
-    text-align:center;
+  .yr-status.breakthrough {
+    color: var(--gold);
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 600;
   }
-
-  /* progress rail */
-  .rail{
-    position:fixed;
-    right:22px;
-    top:50%;
-    transform:translateY(-50%);
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    z-index:20;
+  .next-year-btn {
+    background: rgba(181, 80, 46, 0.15);
+    border: 1.5px solid var(--rust);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    box-shadow: 0 3px 12px rgba(181, 80, 46, 0.2);
+    transition: all 0.25s ease;
+    align-self: flex-start;
   }
-  .rail i{
-    width:6px;height:6px;border-radius:50%;
-    background:var(--line);
-    display:block;
-    cursor:pointer;
-    padding:4px;
-    background-clip:content-box;
-    transition:background .4s ease, transform .4s ease;
+  .next-year-btn:hover {
+    background: var(--rust);
+    color: #FFFFFF;
+    border-color: var(--rust-bright);
+    box-shadow: 0 6px 18px rgba(181, 80, 46, 0.45);
+    transform: translateY(-1px);
   }
-  .rail i.active{background:var(--rust);background-clip:content-box;transform:scale(1.8);}
-  @media (max-width:640px){ .rail{display:none;} }
-
-  .fade-up{
-    opacity:0;
-    transform:translateY(18px);
-    transition:opacity .9s ease, transform .9s ease;
+  .next-year-btn:active {
+    transform: translateY(0);
   }
-  .in-view .fade-up{opacity:1;transform:translateY(0);}
-  .fade-up.d1{transition-delay:.12s;}
-  .fade-up.d2{transition-delay:.28s;}
-  .fade-up.d3{transition-delay:.44s;}
-
-  /* --- Hero --- */
-  #hero{background:radial-gradient(120% 90% at 50% 15%, #1F1A16 0%, var(--bg) 60%);}
-  .crack{
-    position:absolute; inset:0; z-index:0; opacity:.5; pointer-events:none;
+  .next-year-btn:disabled {
+    opacity: 0.3;
+    pointer-events: none;
   }
-  .hero-inner{position:relative; z-index:1; max-width:640px;}
-  .hero-eyebrow{
-    color:var(--muted); font-size:.85rem; letter-spacing:.02em; margin-bottom:1.4rem;
+  .timeline-bar {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 1.5rem;
   }
-  .hero-title{
-    font-family:'Fraunces', serif;
-    font-weight:500;
-    font-size:clamp(2.2rem, 6vw, 3.6rem);
-    line-height:1.1;
-    margin:0 0 1.4rem;
+  .timeline-dot {
+    width: 28px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--line);
+    transition: all 0.3s ease;
   }
-  .hero-sub{
-    color:var(--muted);
-    font-size:1.05rem;
-    max-width:460px;
-    margin:0 auto 3rem;
-    line-height:1.6;
+  .timeline-dot.active {
+    background: var(--rust);
   }
-  .begin{
-    display:inline-block;
-    border:1.5px solid var(--rust);
-    background:rgba(181,80,46,0.18);
-    color:#FFFFFF;
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:1rem;
-    font-weight:600;
-    letter-spacing:.02em;
-    padding:.95rem 2.2rem;
-    border-radius:999px;
-    cursor:pointer;
-    box-shadow:0 4px 18px rgba(181,80,46,0.3);
-    transition:all .25s ease;
+  .timeline-dot.passed {
+    background: var(--line-light);
   }
-  .begin:hover{
-    border-color:var(--rust-bright);
-    background:var(--rust);
-    color:#FFFFFF;
-    transform:translateY(-2px);
-    box-shadow:0 8px 24px rgba(181,80,46,0.5);
-  }
-  .begin:active{
-    transform:translateY(0);
-    box-shadow:0 3px 10px rgba(181,80,46,0.3);
-  }
-  .begin:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
-
-  /* --- 29 --- */
-  .bignum{
-    font-family:'Fraunces', serif;
-    font-weight:300;
-    font-size:clamp(6rem, 26vw, 15rem);
-    line-height:.85;
-    color:var(--rust);
-    margin:0;
-  }
-  .num-cap{
-    font-size:1.15rem;
-    max-width:420px;
-    margin:1.6rem auto 0;
-    line-height:1.65;
-    color:var(--text);
-  }
-  .num-cap b{color:var(--gold); font-weight:500;}
-
-  /* --- years sequence --- */
-  #years{flex-direction:column; gap:2.4rem;}
-  .years-head{max-width:480px;}
-  .years-head p{color:var(--muted); line-height:1.6; font-size:1rem;}
-  .years-head h2{font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.6rem,4vw,2.2rem); margin:.4rem 0 0;}
-  .track{
-    display:flex; align-items:center; gap:2.6rem;
-    max-width:520px; width:100%;
-  }
-  .yr-num{
-    font-family:'Fraunces', serif;
-    font-size:3.2rem;
-    color:var(--muted);
-    width:2.4ch;
-    text-align:right;
-    flex-shrink:0;
-    font-variant-numeric:tabular-nums;
-  }
-  .yr-status{
-    text-align:left;
-    font-size:1.15rem;
-    color:var(--text);
-    min-height:1.6em;
-  }
-  .yr-status.breakthrough{color:var(--gold); font-family:'Fraunces', serif; font-size:1.5rem; font-style:italic;}
-  .next-btn{
-    margin-top:.6rem;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    background:rgba(181,80,46,0.15);
-    border:1.5px solid var(--rust);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:.95rem;
-    font-weight:600;
-    cursor:pointer;
-    padding:.55rem 1.3rem;
-    border-radius:999px;
-    box-shadow:0 3px 12px rgba(181,80,46,0.2);
-    transition:all .25s ease;
-  }
-  .next-btn:hover{
-    background:var(--rust);
-    color:#FFFFFF;
-    border-color:var(--rust-bright);
-    box-shadow:0 6px 18px rgba(181,80,46,0.45);
-    transform:translateY(-1px);
-  }
-  .next-btn:active{transform:translateY(0);}
-  .next-btn:disabled{opacity:0; pointer-events:none;}
-
-  /* --- aruwa reveal --- */
-  #aruwa{background:linear-gradient(180deg, var(--bg) 0%, var(--panel) 100%);}
-  .aruwa-name{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:clamp(2.4rem, 7vw, 4.2rem);
-    margin:0 0 .6rem;
-  }
-  .aruwa-tag{color:var(--muted); font-size:1rem; margin-bottom:2.4rem;}
-  .aruwa-body{max-width:520px; margin:0 auto; line-height:1.75; font-size:1.05rem; color:var(--text);}
-  .aruwa-body strong{color:var(--gold); font-weight:500;}
-
-  /* --- numbers --- */
-  #numbers{background:var(--panel);}
-  .stat-grid{
-    display:grid;
-    grid-template-columns:repeat(3, minmax(140px,1fr));
-    gap:2.4rem 1.6rem;
-    max-width:760px;
-    width:100%;
-  }
-  @media (max-width:680px){ .stat-grid{grid-template-columns:1fr;} }
-  .stat{border-top:1px solid var(--line); padding-top:1.1rem;}
-  .stat .v{font-family:'Fraunces', serif; font-size:2rem; color:var(--rust);}
-  .stat .l{color:var(--muted); font-size:.9rem; margin-top:.35rem; line-height:1.5;}
-
-  .sector-row{
-    margin-top:3rem; display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; max-width:640px;
-  }
-  .chip{
-    border:1px solid var(--line);
-    color:var(--muted);
-    font-size:.82rem;
-    padding:.4rem 1rem;
-    border-radius:999px;
-  }
-
-  /* --- closing --- */
-  #closing{background:var(--bg);}
-  .closing-inner{max-width:520px;}
-  .closing-line{
-    font-family:'Fraunces', serif;
-    font-size:clamp(1.5rem, 4.5vw, 2.1rem);
-    line-height:1.35;
-    margin:0 0 2.2rem;
-  }
-  .closing-line em{color:var(--gold); font-style:italic;}
-  .prompt{color:var(--muted); font-size:.95rem; margin-bottom:1rem;}
-  textarea{
-    width:100%;
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:1rem;
-    border-radius:10px;
-    padding:1rem;
-    resize:none;
-    min-height:90px;
-  }
-  textarea:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
-  .reflect-btn{
-    margin-top:1rem;
-    border:1.5px solid var(--rust);
-    background:var(--rust);
-    color:#FFFFFF;
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:.95rem;
-    font-weight:600;
-    letter-spacing:.02em;
-    padding:.85rem 2rem;
-    border-radius:999px;
-    cursor:pointer;
-    box-shadow:0 4px 18px rgba(181,80,46,0.4);
-    transition:all .25s ease;
-  }
-  .reflect-btn:hover{
-    background:var(--rust-bright);
-    border-color:var(--rust-bright);
-    box-shadow:0 8px 24px rgba(181,80,46,0.55);
-    transform:translateY(-2px);
-  }
-  .reflect-btn:active{transform:translateY(0);}
-  .reflection{
-    margin-top:1.6rem;
-    font-family:'Fraunces', serif;
-    font-style:italic;
-    color:var(--gold);
-    min-height:1.4em;
-    font-size:1.05rem;
-  }
-  .signature{
-    margin-top:4rem;
-    padding-top:2rem;
-    border-top:1px solid var(--line);
-  }
-  .signature .n{font-family:'Fraunces', serif; font-size:1.3rem;}
-  .signature .r{color:var(--muted); font-size:.9rem; margin-top:.3rem;}
-  .next-piece{margin-top:2rem;}
-  .next-piece a{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    color:var(--gold);
-    background:rgba(201,162,39,0.1);
-    border:1.5px solid var(--gold);
-    padding:.75rem 1.6rem;
-    border-radius:999px;
-    text-decoration:none;
-    font-size:.95rem;
-    font-weight:600;
-    box-shadow:0 4px 16px rgba(201,162,39,0.2);
-    transition:all .25s ease;
-  }
-  .next-piece a:hover{
-    background:var(--gold);
-    color:#14110F;
-    border-color:var(--gold-bright);
-    box-shadow:0 6px 22px rgba(201,162,39,0.45);
-    transform:translateY(-2px);
-  }
-  .next-piece a:active{transform:translateY(0);}
 </style>
 </head>
 <body>
 
-<div class="rail" aria-hidden="true">
-  <i data-dot="hero" class="active" title="Introduction"></i>
-  <i data-dot="leap" title="The Leap"></i>
-  <i data-dot="years" title="Eight Years"></i>
-  <i data-dot="aruwa" title="Aruwa Capital"></i>
-  <i data-dot="numbers" title="Impact & Numbers"></i>
-  <i data-dot="closing" title="Reflection"></i>
+<header class="site-header">
+  <div class="nav-container">
+    <a href="index.html" class="brand">
+      <span>Eight Years</span>
+      <span class="brand-tag">Adesuwa Rhodes</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">01. The Leap</a>
+      <a href="eight-years.html" class="nav-link active">02. The 8 Years</a>
+      <a href="impact.html" class="nav-link">03. Impact</a>
+      <a href="rhodes-effect.html" class="nav-link">04. Ripple Effect</a>
+      <a href="reflection.html" class="nav-link">05. Reflection</a>
+    </nav>
+  </div>
+</header>
+
+<div class="mobile-nav">
+  <span>Chapter 02 of 05</span>
+  <span style="color:var(--text);font-weight:600;">The 8 Years</span>
 </div>
 
-<div class="scroller" id="scroller">
+<main class="main-content fade-in">
+  <div class="chapter-badge">Chapter 02 · The Journey</div>
+  <h1 class="page-title" id="yearsHeading">Eight years of fundraising.</h1>
+  <p class="page-sub">Before there was an institutional platform, there was a single founder pitching hundreds of times, facing rejection year after year.</p>
 
-  <section id="hero" class="in-view">
-    <svg class="crack" viewBox="0 0 800 800" preserveAspectRatio="none">
-      <path d="M0,120 C150,180 180,260 260,300 C340,340 300,420 380,470 C460,520 420,600 500,650 C560,690 600,740 800,760"
-        fill="none" stroke="#B5502E" stroke-width="1.2" opacity="0.35"/>
-    </svg>
-    <div class="hero-inner">
-      <div class="hero-eyebrow fade-up">an interactive story</div>
-      <h1 class="hero-title fade-up d1">Some things aren't won.<br>They're worn down, one no at a time.</h1>
-      <p class="hero-sub fade-up d2">The story of the eight years it took to raise a first fund — and the woman who kept showing up on the ninth.</p>
-      <button class="begin fade-up d3" id="beginBtn">Begin</button>
-    </div>
-  </section>
+  <div class="card">
+    <div style="color:var(--muted);font-size:0.9rem;text-transform:uppercase;letter-spacing:0.06em;">Interactive Timeline</div>
 
-  <section id="leap">
-    <div>
-      <p class="bignum fade-up">29</p>
-      <p class="num-cap fade-up d1">The age she left a stable career in investment banking and private equity to build something with no guarantee it would work — <b>her own fund</b>.</p>
-    </div>
-  </section>
-
-  <section id="years">
-    <div class="years-head fade-up">
-      <p>Before there was a fund, there was a founder asking for money, again and again.</p>
-      <h2 id="yearsHeading">Eight years of fundraising.</h2>
-    </div>
-    <div class="track fade-up d1">
+    <div class="track">
       <div class="yr-num" id="yrNum">1</div>
-      <div>
-        <div class="yr-status" id="yrStatus">Not yet.</div>
-        <button class="next-btn" id="nextYear">next year →</button>
+      <div class="yr-content">
+        <div class="yr-status" id="yrStatus">Not yet. Keep pitching.</div>
+        <button class="next-year-btn" id="nextYear">Step to Year 2 →</button>
       </div>
     </div>
-  </section>
 
-  <section id="aruwa">
-    <div>
-      <p class="aruwa-name fade-up">Aruwa Capital Management</p>
-      <p class="aruwa-tag fade-up d1">Founded by Adesuwa Rhodes</p>
-      <p class="aruwa-body fade-up d2">One of the few <strong>women-owned and women-led</strong> private equity funds in Africa, backing rapidly growing, overlooked businesses across <strong>Nigeria and Ghana</strong> — built on the belief that capital allocated through a gender lens returns more, to more people.</p>
+    <div class="timeline-bar" id="timelineBar">
+      <div class="timeline-dot active"></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-dot"></div>
     </div>
-  </section>
+  </div>
 
-  <section id="numbers">
-    <div>
-      <div class="stat-grid">
-        <div class="stat fade-up"><div class="v">$80M</div><div class="l">investment platform built from that first close</div></div>
-        <div class="stat fade-up d1"><div class="v">2</div><div class="l">funds raised — Aruwa Fund I and Fund II</div></div>
-        <div class="stat fade-up d2"><div class="v">3x+</div><div class="l">realised return on capital exited to date</div></div>
-      </div>
-      <div class="sector-row fade-up d2">
-        <span class="chip">Healthcare</span>
-        <span class="chip">Fintech</span>
-        <span class="chip">Consumer goods</span>
-        <span class="chip">Renewable energy</span>
-        <span class="chip">Wellness</span>
-      </div>
+  <div id="breakthroughAction" style="display:none;margin-top:1rem;" class="fade-in">
+    <a href="impact.html" class="btn btn-primary" style="font-size:1.05rem;padding:1rem 2.2rem;">
+      <span>Explore the Impact ($80M Platform)</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="page-nav">
+    <div class="page-nav-left">
+      <a href="index.html" class="btn btn-outline" style="padding:0.6rem 1.4rem;font-size:0.9rem;">
+        ← Prev: The Leap
+      </a>
     </div>
-  </section>
-
-  <section id="closing">
-    <div class="closing-inner">
-      <p class="closing-line fade-up">She didn't wait for a seat at the table.<br>She <em>built one</em>, and pulled up chairs for others.</p>
-      <p class="prompt fade-up d1">Your turn — what are you building, and how long have you been at it?</p>
-      <textarea class="fade-up d1" id="userInput" placeholder="I'm building…" aria-label="What are you building?"></textarea>
-      <div>
-        <button class="reflect-btn fade-up d1" id="reflectBtn">Reflect it back</button>
-      </div>
-      <p class="reflection" id="reflection"></p>
-      <div class="signature fade-up d2">
-        <div class="n">Adesuwa Rhodes</div>
-        <div class="r">Founder &amp; Managing Partner, Aruwa Capital Management</div>
-      </div>
-      <p class="next-piece fade-up d2">
-        <a href="rhodes-effect.html">See what that first close set in motion →</a>
-      </p>
+    <div class="page-nav-right">
+      <a href="impact.html" class="btn btn-secondary" style="padding:0.6rem 1.4rem;font-size:0.9rem;">
+        Next: Aruwa Impact →
+      </a>
     </div>
-  </section>
-
-</div>
+  </div>
+</main>
 
 <script>
-  // scroll to next section
-  const beginBtn = document.getElementById('beginBtn');
-  if (beginBtn) {
-    beginBtn.addEventListener('click', () => {
-      document.getElementById('leap').scrollIntoView({behavior:'smooth'});
-    });
-  }
-
-  // reveal-on-view & dot navigation
-  const sections = document.querySelectorAll('section');
-  const dots = document.querySelectorAll('.rail i');
-
-  function updateActiveDot(id) {
-    dots.forEach(d => {
-      if (d.getAttribute('data-dot') === id) {
-        d.classList.add('active');
-      } else {
-        d.classList.remove('active');
-      }
-    });
-  }
-
-  // Clickable rail navigation
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const targetId = dot.getAttribute('data-dot');
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        targetEl.scrollIntoView({behavior:'smooth'});
-      }
-    });
-  });
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if(e.isIntersecting){
-          e.target.classList.add('in-view');
-          updateActiveDot(e.target.id);
-        }
-      });
-    }, {threshold: 0.2});
-    sections.forEach(s => io.observe(s));
-  } else {
-    // Fallback if IntersectionObserver is unsupported
-    sections.forEach(s => s.classList.add('in-view'));
-  }
-
-  // eight years sequence
   const yrNum = document.getElementById('yrNum');
   const yrStatus = document.getElementById('yrStatus');
   const nextYear = document.getElementById('nextYear');
   const yearsHeading = document.getElementById('yearsHeading');
+  const timelineDots = document.querySelectorAll('.timeline-dot');
+  const breakthroughAction = document.getElementById('breakthroughAction');
+
+  const yearMessages = [
+    "Not yet. Keep pitching.",
+    "Another 'no'. The thesis holds.",
+    "Macro headwinds, still knocking on doors.",
+    "Hundreds of meetings. Zero institutional checks.",
+    "Halfway through a decade of persistence.",
+    "Building track record deal by deal.",
+    "Momentum builds. Final diligence underway.",
+    "First Close! Persistence compounds too."
+  ];
+
   let year = 1;
   const total = 8;
-  if (nextYear) {
-    nextYear.addEventListener('click', () => {
-      if(year < total){
-        year++;
-        yrNum.textContent = year;
-        yrStatus.textContent = 'Not yet.';
-        yrStatus.classList.remove('breakthrough');
-        if(year === total){
-          nextYear.textContent = 'see what happened →';
-        }
+
+  function updateTimeline() {
+    timelineDots.forEach((dot, idx) => {
+      if (idx < year - 1) {
+        dot.className = 'timeline-dot passed';
+      } else if (idx === year - 1) {
+        dot.className = 'timeline-dot active';
       } else {
-        yrStatus.textContent = 'First close.';
-        yrStatus.classList.add('breakthrough');
-        yearsHeading.textContent = 'Persistence compounds too.';
-        nextYear.disabled = true;
-        setTimeout(() => {
-          document.getElementById('aruwa').scrollIntoView({behavior:'smooth'});
-        }, 1400);
+        dot.className = 'timeline-dot';
       }
     });
   }
 
-  // closing reflection — simple local response, no server involved
-  const reflectBtn = document.getElementById('reflectBtn');
-  const userInput = document.getElementById('userInput');
-  const reflection = document.getElementById('reflection');
-  const lines = [
-    "That's a fund thesis in the making. Keep making the case.",
-    "Somewhere between year one and the close, this becomes the story you tell.",
-    "Write that down somewhere. You'll want to remember exactly how it started.",
-    "The no's are data, not verdicts. Keep going.",
-  ];
-  if (reflectBtn && userInput && reflection) {
-    reflectBtn.addEventListener('click', () => {
-      if(userInput.value.trim().length === 0){
-        reflection.textContent = 'Type something first — even one line.';
-        return;
+  nextYear.addEventListener('click', () => {
+    if (year < total) {
+      year++;
+      yrNum.textContent = year;
+      yrStatus.textContent = yearMessages[year - 1];
+      updateTimeline();
+
+      if (year === total) {
+        nextYear.textContent = 'See What Happened →';
+      } else {
+        nextYear.textContent = `Step to Year ${year + 1} →`;
       }
-      reflection.textContent = lines[Math.floor(Math.random()*lines.length)];
-    });
-  }
+    } else {
+      yrStatus.textContent = 'First close achieved.';
+      yrStatus.classList.add('breakthrough');
+      yearsHeading.textContent = 'Persistence compounds too.';
+      nextYear.disabled = true;
+      nextYear.style.display = 'none';
+      breakthroughAction.style.display = 'block';
+    }
+  });
 </script>
 
 </body>
