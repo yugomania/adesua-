@@ -28,7 +28,6 @@
   }
   @media (prefers-reduced-motion: no-preference){
     html{scroll-behavior:smooth;}
-    .scroller{scroll-behavior:smooth;}
   }
 
   .serif{font-family:'Fraunces', serif;}
@@ -37,7 +36,6 @@
     height:100vh;
     overflow-y:scroll;
     scroll-snap-type:y proximity;
-    -webkit-overflow-scrolling:touch;
   }
   section{
     min-height:100vh;
@@ -66,12 +64,9 @@
     width:5px;height:5px;border-radius:50%;
     background:var(--line);
     display:block;
-    cursor:pointer;
-    padding:4px;
-    background-clip:content-box;
     transition:background .4s ease, transform .4s ease;
   }
-  .rail i.active{background:var(--rust);background-clip:content-box;transform:scale(1.8);}
+  .rail i.active{background:var(--rust);transform:scale(1.8);}
   @media (max-width:640px){ .rail{display:none;} }
 
   .fade-up{
@@ -266,28 +261,31 @@
   }
   .signature .n{font-family:'Fraunces', serif; font-size:1.3rem;}
   .signature .r{color:var(--muted); font-size:.9rem; margin-top:.3rem;}
+  .next-piece{margin-top:1.6rem; font-size:.9rem;}
+  .next-piece a{color:var(--rust); text-decoration:none; border-bottom:1px solid var(--rust-soft); padding-bottom:2px;}
+  .next-piece a:hover{color:var(--gold); border-color:var(--gold);}
 </style>
 </head>
 <body>
 
 <div class="rail" aria-hidden="true">
-  <i data-dot="hero" class="active" title="Introduction"></i>
-  <i data-dot="leap" title="The Leap"></i>
-  <i data-dot="years" title="Eight Years"></i>
-  <i data-dot="aruwa" title="Aruwa Capital"></i>
-  <i data-dot="numbers" title="Impact & Numbers"></i>
-  <i data-dot="closing" title="Reflection"></i>
+  <i data-dot="hero" class="active"></i>
+  <i data-dot="leap"></i>
+  <i data-dot="years"></i>
+  <i data-dot="aruwa"></i>
+  <i data-dot="numbers"></i>
+  <i data-dot="closing"></i>
 </div>
 
 <div class="scroller" id="scroller">
 
-  <section id="hero" class="in-view">
+  <section id="hero">
     <svg class="crack" viewBox="0 0 800 800" preserveAspectRatio="none">
       <path d="M0,120 C150,180 180,260 260,300 C340,340 300,420 380,470 C460,520 420,600 500,650 C560,690 600,740 800,760"
         fill="none" stroke="#B5502E" stroke-width="1.2" opacity="0.35"/>
     </svg>
     <div class="hero-inner">
-      <div class="hero-eyebrow fade-up"><b>An Interactive Story</b></div>
+      <div class="hero-eyebrow fade-up">an interactive story</div>
       <h1 class="hero-title fade-up d1">Some things aren't won.<br>They're worn down, one no at a time.</h1>
       <p class="hero-sub fade-up d2">The story of the eight years it took to raise a first fund — and the woman who kept showing up on the ninth.</p>
       <button class="begin fade-up d3" id="beginBtn">Begin</button>
@@ -353,6 +351,9 @@
         <div class="n">Adesuwa Rhodes</div>
         <div class="r">Founder &amp; Managing Partner, Aruwa Capital Management</div>
       </div>
+      <p class="next-piece fade-up d2">
+        <a href="rhodes-effect.html">See what that first close set in motion →</a>
+      </p>
     </div>
   </section>
 
@@ -360,52 +361,24 @@
 
 <script>
   // scroll to next section
-  const beginBtn = document.getElementById('beginBtn');
-  if (beginBtn) {
-    beginBtn.addEventListener('click', () => {
-      document.getElementById('leap').scrollIntoView({behavior:'smooth'});
-    });
-  }
-
-  // reveal-on-view & dot navigation
-  const sections = document.querySelectorAll('section');
-  const dots = document.querySelectorAll('.rail i');
-
-  function updateActiveDot(id) {
-    dots.forEach(d => {
-      if (d.getAttribute('data-dot') === id) {
-        d.classList.add('active');
-      } else {
-        d.classList.remove('active');
-      }
-    });
-  }
-
-  // Clickable rail navigation
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const targetId = dot.getAttribute('data-dot');
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        targetEl.scrollIntoView({behavior:'smooth'});
-      }
-    });
+  document.getElementById('beginBtn').addEventListener('click', () => {
+    document.getElementById('leap').scrollIntoView({behavior:'smooth'});
   });
 
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if(e.isIntersecting){
-          e.target.classList.add('in-view');
-          updateActiveDot(e.target.id);
-        }
-      });
-    }, {threshold: 0.2});
-    sections.forEach(s => io.observe(s));
-  } else {
-    // Fallback if IntersectionObserver is unsupported
-    sections.forEach(s => s.classList.add('in-view'));
-  }
+  // reveal-on-view
+  const sections = document.querySelectorAll('section');
+  const dots = document.querySelectorAll('.rail i');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        dots.forEach(d => d.classList.remove('active'));
+        const match = document.querySelector(`.rail i[data-dot="${e.target.id}"]`);
+        if(match) match.classList.add('active');
+      }
+    });
+  }, {threshold:0.4});
+  sections.forEach(s => io.observe(s));
 
   // eight years sequence
   const yrNum = document.getElementById('yrNum');
@@ -414,27 +387,25 @@
   const yearsHeading = document.getElementById('yearsHeading');
   let year = 1;
   const total = 8;
-  if (nextYear) {
-    nextYear.addEventListener('click', () => {
-      if(year < total){
-        year++;
-        yrNum.textContent = year;
-        yrStatus.textContent = 'Not yet.';
-        yrStatus.classList.remove('breakthrough');
-        if(year === total){
-          nextYear.textContent = 'see what happened →';
-        }
-      } else {
-        yrStatus.textContent = 'First close.';
-        yrStatus.classList.add('breakthrough');
-        yearsHeading.textContent = 'Persistence compounds too.';
-        nextYear.disabled = true;
-        setTimeout(() => {
-          document.getElementById('aruwa').scrollIntoView({behavior:'smooth'});
-        }, 1400);
+  nextYear.addEventListener('click', () => {
+    if(year < total){
+      year++;
+      yrNum.textContent = year;
+      yrStatus.textContent = 'Not yet.';
+      yrStatus.classList.remove('breakthrough');
+      if(year === total){
+        nextYear.textContent = 'see what happened →';
       }
-    });
-  }
+    } else {
+      yrStatus.textContent = 'First close.';
+      yrStatus.classList.add('breakthrough');
+      yearsHeading.textContent = 'Persistence compounds too.';
+      nextYear.disabled = true;
+      setTimeout(() => {
+        document.getElementById('aruwa').scrollIntoView({behavior:'smooth'});
+      }, 1400);
+    }
+  });
 
   // closing reflection — simple local response, no server involved
   const reflectBtn = document.getElementById('reflectBtn');
@@ -446,15 +417,13 @@
     "Write that down somewhere. You'll want to remember exactly how it started.",
     "The no's are data, not verdicts. Keep going.",
   ];
-  if (reflectBtn && userInput && reflection) {
-    reflectBtn.addEventListener('click', () => {
-      if(userInput.value.trim().length === 0){
-        reflection.textContent = 'Type something first — even one line.';
-        return;
-      }
-      reflection.textContent = lines[Math.floor(Math.random()*lines.length)];
-    });
-  }
+  reflectBtn.addEventListener('click', () => {
+    if(userInput.value.trim().length === 0){
+      reflection.textContent = 'Type something first — even one line.';
+      return;
+    }
+    reflection.textContent = lines[Math.floor(Math.random()*lines.length)];
+  });
 </script>
 
 </body>

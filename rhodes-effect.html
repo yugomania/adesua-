@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rhodes Effect — a capital story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14110F;
+    --panel:#1C1815;
+    --rust:#B5502E;
+    --rust-soft:#8C4026;
+    --gold:#C9A227;
+    --text:#EDE6DC;
+    --muted:#93897C;
+    --line:#3A322C;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth;} }
+  .serif{font-family:'Fraunces', serif;}
+
+  section{
+    min-height:100vh; width:100%;
+    display:flex; align-items:center; justify-content:center;
+    padding:8vh 6vw; text-align:center; position:relative;
+  }
+
+  .fade-up{opacity:0; transform:translateY(18px); transition:opacity .9s ease, transform .9s ease;}
+  .in-view .fade-up{opacity:1; transform:translateY(0);}
+  .fade-up.d1{transition-delay:.12s;}
+  .fade-up.d2{transition-delay:.28s;}
+
+  /* hero */
+  #hero{background:radial-gradient(120% 90% at 50% 15%, #1F1A16 0%, var(--bg) 60%);}
+  .hero-eyebrow{color:var(--muted); font-size:.85rem; margin-bottom:1.4rem;}
+  .hero-title{font-family:'Fraunces', serif; font-weight:500; font-size:clamp(2.1rem,6vw,3.4rem); line-height:1.15; margin:0 0 1.4rem; max-width:680px;}
+  .hero-sub{color:var(--muted); font-size:1.05rem; max-width:460px; margin:0 auto 3rem; line-height:1.6;}
+  .begin{border:1px solid var(--line); background:transparent; color:var(--text); font-size:.95rem; padding:.9rem 1.9rem; border-radius:999px; cursor:pointer; transition:border-color .3s, background .3s; font-family:'IBM Plex Sans', sans-serif;}
+  .begin:hover{border-color:var(--rust); background:rgba(181,80,46,.08);}
+  .begin:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+
+  /* chain */
+  #chain{flex-direction:column; gap:2.4rem; min-height:100vh;}
+  .chain-head{max-width:480px;}
+  .chain-head p{color:var(--muted); line-height:1.6;}
+  .chain-wrap{max-width:560px; width:100%;}
+  .links{display:flex; flex-direction:column; align-items:center; gap:0;}
+  .link{
+    display:flex; flex-direction:column; align-items:center; gap:.4rem;
+    width:100%; max-width:440px;
+    opacity:0; max-height:0; overflow:hidden;
+    transition:opacity .6s ease, max-height .6s ease;
+  }
+  .link.shown{opacity:1; max-height:220px; margin-bottom:1.6rem;}
+  .link .tag{font-size:.78rem; color:var(--rust); text-transform:lowercase;}
+  .link .stat{font-family:'Fraunces', serif; font-size:1.9rem; color:var(--gold);}
+  .link .desc{font-size:.95rem; color:var(--text); max-width:400px; line-height:1.5;}
+  .connector{
+    width:1px; height:1.6rem; background:var(--line);
+    margin-bottom:1.6rem;
+  }
+  .connector.shown{background:var(--rust);}
+  .pull-btn{
+    margin-top:.6rem;
+    background:none; border:none; color:var(--muted);
+    font-family:'IBM Plex Sans', sans-serif; font-size:.88rem; cursor:pointer;
+    border-bottom:1px solid var(--line); padding-bottom:2px;
+  }
+  .pull-btn:hover{color:var(--rust); border-color:var(--rust);}
+  .pull-btn:disabled{opacity:0; pointer-events:none;}
+
+  /* closing */
+  #closing{background:linear-gradient(180deg, var(--bg) 0%, var(--panel) 100%);}
+  .closing-inner{max-width:540px;}
+  .closing-line{font-family:'Fraunces', serif; font-size:clamp(1.5rem,4.5vw,2.1rem); line-height:1.4; margin:0 0 2rem;}
+  .closing-line em{color:var(--gold); font-style:italic;}
+  .aruwa-body{max-width:480px; margin:0 auto; line-height:1.75; font-size:1rem; color:var(--muted);}
+  .aruwa-body strong{color:var(--gold); font-weight:500;}
+  .signature{margin-top:3rem; padding-top:2rem; border-top:1px solid var(--line);}
+  .signature .n{font-family:'Fraunces', serif; font-size:1.3rem;}
+  .signature .r{color:var(--muted); font-size:.9rem; margin-top:.3rem;}
+  .source-note{margin-top:2.4rem; font-size:.78rem; color:var(--muted); max-width:420px; line-height:1.5;}
+  .next-piece{margin-top:1.4rem; font-size:.9rem;}
+  .next-piece a{color:var(--rust); text-decoration:none; border-bottom:1px solid var(--rust-soft); padding-bottom:2px;}
+  .next-piece a:hover{color:var(--gold); border-color:var(--gold);}
+</style>
+</head>
+<body>
+
+<div class="scroller">
+
+  <section id="hero">
+    <div>
+      <div class="hero-eyebrow fade-up">an interactive story</div>
+      <h1 class="hero-title fade-up d1">A check is a small thing.<br>Watch where it goes.</h1>
+      <p class="hero-sub fade-up d2">What actually happens after Aruwa Capital writes an investment into an overlooked business — traced link by link.</p>
+      <button class="begin fade-up d2" id="beginBtn">Pull the thread</button>
+    </div>
+  </section>
+
+  <section id="chain">
+    <div class="chain-head fade-up">
+      <p>Each figure below is a real, reported outcome of Aruwa Capital's portfolio — not a projection.</p>
+    </div>
+    <div class="chain-wrap fade-up d1">
+      <div class="links" id="links"></div>
+      <button class="pull-btn" id="pullBtn">pull →</button>
+    </div>
+  </section>
+
+  <section id="closing">
+    <div class="closing-inner">
+      <p class="closing-line fade-up">Capital didn't stop at the check.<br>It kept <em>moving</em>.</p>
+      <p class="aruwa-body fade-up d1">Aruwa Capital invests through a gender lens — backing businesses that are founded or led by women, or that serve women as customers — on the belief that closing that gap doesn't just help women. It compounds through <strong>families</strong>, <strong>supply chains</strong>, and <strong>local economies</strong> at once.</p>
+      <div class="signature fade-up d2">
+        <div class="n">Adesuwa Rhodes</div>
+        <div class="r">Founder &amp; Managing Partner, Aruwa Capital Management</div>
+      </div>
+      <p class="source-note fade-up d2">Figures reported by Aruwa Capital Management and Alliance Magazine, ImpactAssets, and thebenchmark.com.ng, as publicly disclosed through 2025.</p>
+      <p class="next-piece fade-up d2">
+        <a href="eight-years.html">← Back to where it started: eight years of no</a>
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  document.getElementById('beginBtn').addEventListener('click', () => {
+    document.getElementById('chain').scrollIntoView({behavior:'smooth'});
+  });
+
+  const sections = document.querySelectorAll('section');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in-view'); });
+  }, {threshold:0.35});
+  sections.forEach(s => io.observe(s));
+
+  const chainData = [
+    { tag:'the check', stat:'$500K – $2.5M', desc:'Aruwa\'s typical investment into one growing, overlooked business in Nigeria or Ghana.' },
+    { tag:'the businesses', stat:'10 investments', desc:'Companies backed so far — about half founded or led by women.' },
+    { tag:'the jobs', stat:'~97,000 jobs', desc:'Created directly and indirectly across the portfolio, roughly 700 of them direct hires.' },
+    { tag:'the supply chain', stat:'$18.6M', desc:'Generated for the agents, distributors, smallholder farmers and retailers around those businesses.' },
+    { tag:'the economy', stat:'18 countries', desc:'Where portfolio companies now generate revenue, radiating out from two home markets.' },
+    { tag:'the state', stat:'$2.9M in taxes', desc:'Paid into Nigeria\'s economy by the businesses Aruwa backed.' },
+  ];
+
+  const linksEl = document.getElementById('links');
+  const pullBtn = document.getElementById('pullBtn');
+  let idx = 0;
+
+  function renderNext(){
+    if(idx >= chainData.length){
+      pullBtn.disabled = true;
+      setTimeout(() => document.getElementById('closing').scrollIntoView({behavior:'smooth'}), 900);
+      return;
+    }
+    if(idx > 0){
+      const c = document.createElement('div');
+      c.className = 'connector';
+      linksEl.appendChild(c);
+      requestAnimationFrame(() => c.classList.add('shown'));
+    }
+    const d = chainData[idx];
+    const el = document.createElement('div');
+    el.className = 'link';
+    el.innerHTML = `<div class="tag">${d.tag}</div><div class="stat">${d.stat}</div><div class="desc">${d.desc}</div>`;
+    linksEl.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('shown'));
+    idx++;
+    if(idx === chainData.length){ pullBtn.textContent = 'see what it adds up to →'; }
+  }
+
+  pullBtn.addEventListener('click', renderNext);
+</script>
+
+</body>
+</html>
